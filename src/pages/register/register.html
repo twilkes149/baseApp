@@ -11,9 +11,8 @@
 
   <ion-list class="borderRadius">
     <!-- Create a paragraph to display errors -->
-    <p id="ErrorWindow" class="errorMessage">
-      {{error}}
-      <br>      
+    <p id="ErrorWindow" class="errorMessage" *ngIf="error" [innerHtml]="error">      
+      <br>
     </p>
 
     <ion-item class="borderRadius listItem">
@@ -23,7 +22,7 @@
 
     <ion-item class="borderRadius listItem">
       <ion-label fixed>Last Name</ion-label>
-      <ion-input type="text" value="" [(ngModel)]="firstName"></ion-input>
+      <ion-input type="text" value="" [(ngModel)]="lastName"></ion-input>
     </ion-item>
 
     <ion-item class="borderRadius listItem">
@@ -47,11 +46,11 @@
     </ion-item>
   </ion-list>
 
-  <button ion-button (click)="register()">Create Account</button>
+  <button ion-button (click)="register()" class="borderRadius">Create Account</button>
 
   <div class="spacer" style="width: 300px; height: 20px;"></div>
 
-  <div class="borderRadius row" style="background-color: #FFFFFF">
+  <div class="borderRadius row" style="background-color: #FFFFFF" [ngStyle]="{'padding': '10px'}">
     <div class="show-list-numbers-and-dots col">
       <p style="margin-top:0px;color:#000000;">Already have an account?</p>      
     </div>
