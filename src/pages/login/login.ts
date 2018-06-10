@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController } from 'ionic-angular';
 
 //pages
 import { RegisterPage } from '../register/register';
@@ -18,7 +18,10 @@ export class LoginPage {
   private username:string;
   private password:string;
 
-  constructor(public navCtrl: NavController, public api: ApiProvider) {
+  constructor(public navCtrl: NavController, 
+    public api: ApiProvider, 
+    public alert: AlertController,
+    public loading: LoadingController) {
 
   }
 
@@ -45,15 +48,32 @@ export class LoginPage {
     this.error = this.verifyFields(this.username, this.password);
 
     if (!this.error) {
+      //show loading indicator
+      const loader = this.loading.create({
+        content: "Logging in...",
+        dismissOnPageChange: true,
+      });
+      loader.present();
+
       //on success will return the auth token
       //on failure will return object describing failure
       this.api.login(this.username, this.password)
       .then((result) => {
         console.log("api call result", result);
+        //navigate to the appropiate page here
       })
       .catch ((error) => {
+        const message = this.alert.create({
+          title: 'Error',
+          subTitle: error.message,
+          buttons: ['OK']
+        });
+        message.present();
         console.log("api error: ", error);
-      });
+      })
+      .then(() => {
+        loader.dismiss();
+      });      
     }
   }
 

@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController } from 'ionic-angular';
+
+//pages
 import { LoginPage } from '../login/login';
 
+//providers
+import { ApiProvider } from '../../providers/api/api';
 
 @Component({
   selector: 'page-register',
-  templateUrl: 'register.html'
+  templateUrl: 'register.html',
+  providers: [ApiProvider]
 })
 export class RegisterPage {
   private error;
@@ -17,7 +22,10 @@ export class RegisterPage {
   private confirmPassword:string;
   private username:string;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, 
+    private api: ApiProvider,
+    public loading: LoadingController,
+    public alert: AlertController) {
 
   }
 
@@ -46,6 +54,34 @@ export class RegisterPage {
 
   register() {
     this.error = this.verifyFields(this.email, this.password, this.confirmPassword, this.firstName, this.lastName, this.username);
+
+    if (!this.error) {
+      //show loading indicator
+      const loader = this.loading.create({
+        content: "Registering...",
+        dismissOnPageChange: true,
+      });
+      loader.present();
+
+      this.api.register(this.username, this.password, this.email, this.firstName, this.lastName)
+      .then((result) => {
+        console.log("API register result: ", result)
+
+        //navigate to appropiate page here
+      })
+      .catch((error) => {
+        const message = this.alert.create({
+          title: 'Error',
+          subTitle: error.message,
+          buttons: ['OK']
+        });
+        message.present();
+        console.log("api error: ", error);
+      })
+      .then(() => {
+        loader.dismiss();//dismiss loading indicator
+      });
+    }
   }
 
   goToLogin() {
