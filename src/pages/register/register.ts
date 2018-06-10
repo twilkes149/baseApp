@@ -3,6 +3,7 @@ import { NavController, LoadingController, AlertController } from 'ionic-angular
 
 //pages
 import { LoginPage } from '../login/login';
+import { DummyPage } from '../dummy/dummy';
 
 //providers
 import { ApiProvider } from '../../providers/api/api';
@@ -19,8 +20,7 @@ export class RegisterPage {
   private password:string;
   private firstName:string;
   private lastName:string;
-  private confirmPassword:string;
-  private username:string;
+  private confirmPassword:string;  
 
   constructor(public navCtrl: NavController, 
     private api: ApiProvider,
@@ -30,7 +30,7 @@ export class RegisterPage {
   }
 
   //returns false if no error, and returns error string if there is an error
-  verifyFields(email, password, password2, firstName, lastName, username) {
+  verifyFields(email, password, password2, firstName, lastName) {
     let error:string = '';
     if (!email)
       error += "Please enter a valid email <br/>";
@@ -43,9 +43,7 @@ export class RegisterPage {
     if (!firstName)
       error += "Please enter your first name <br/>";
     if (!lastName)
-      error += "Please enter your last name <br/>";
-    if (!username)
-      error += "Please enter a username <br />";
+      error += "Please enter your last name <br/>";  
     
     if (error)
       return error;
@@ -53,7 +51,7 @@ export class RegisterPage {
   }
 
   register() {
-    this.error = this.verifyFields(this.email, this.password, this.confirmPassword, this.firstName, this.lastName, this.username);
+    this.error = this.verifyFields(this.email, this.password, this.confirmPassword, this.firstName, this.lastName);
 
     if (!this.error) {
       //show loading indicator
@@ -63,11 +61,12 @@ export class RegisterPage {
       });
       loader.present();
 
-      this.api.register(this.username, this.password, this.email, this.firstName, this.lastName)
+      this.api.register(this.password, this.email, this.firstName, this.lastName)
       .then((result) => {
         console.log("API register result: ", result)
 
         //navigate to appropiate page here
+        this.navCtrl.push(DummyPage);
       })
       .catch((error) => {
         const message = this.alert.create({

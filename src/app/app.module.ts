@@ -9,6 +9,7 @@ import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { ForgotPasswordPage } from '../pages/forgotPassword/forgotPassword';
+import { DummyPage } from '../pages/dummy/dummy';
 
 //providers
 import { HTTP } from '@ionic-native/http';
@@ -20,6 +21,7 @@ import { ApiProvider } from '../providers/api/api';
     LoginPage,
     RegisterPage,
     ForgotPasswordPage,
+    DummyPage,
   ],
   imports: [
     BrowserModule,
@@ -31,6 +33,7 @@ import { ApiProvider } from '../providers/api/api';
     LoginPage,
     RegisterPage,
     ForgotPasswordPage,
+    DummyPage,
   ],
   providers: [
     StatusBar,

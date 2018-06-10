@@ -18,14 +18,14 @@ export class ApiProvider {
   }
 
   //calls api for login and returns promise
-  login(username, password) {
+  login(email, password) {
     this.http.setDataSerializer('json');
     if (this.authToken) {
       return Promise.resolve(this.authToken);
     }
     else {
       let body = {
-        username: username,
+        email: email,
         password: password,
       };
 
@@ -46,15 +46,14 @@ export class ApiProvider {
   }
 
   //calls api for register and returns a promise
-  register(username, password, email, firstName, lastName) {
+  register(password, email, firstName, lastName) {
     this.http.setDataSerializer('json');
     if (this.authToken) {
       return Promise.resolve(this.authToken);
     }
     else {
       return new Promise((resolve, reject) => {
-        let body = {
-          username: username,
+        let body = {          
           email: email,
           password: password,
           firstname: firstName,
